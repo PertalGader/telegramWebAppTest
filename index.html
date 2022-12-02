@@ -12,24 +12,6 @@
     <title></title>
     <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
-        <script>
-        function setThemeClass() {
-            document.documentElement.className = Telegram.WebApp.colorScheme;
-        }
-        function onScanSuccess(decodedText, decodedResult) {
-            console.log(`Code scanned = ${decodedText}`, decodedResult);
-            html5QrcodeScanner.clear();
-            Telegram.WebApp.sendData(decodedText);
-        }
-        function startScan(){
-            var html5QrcodeScanner = new Html5QrcodeScanner(
-                "qr-reader", { fps: 10, qrbox: 250 });
-            html5QrcodeScanner.render(onScanSuccess);
-        }
-        Telegram.WebApp.onEvent('themeChanged', setThemeClass);
-        setThemeClass();
-
-    </script>
     <style>
         body {
             font-family: sans-serif;
@@ -242,6 +224,21 @@
 <script type="application/javascript">
     Telegram.WebApp.ready();
 
+    function setThemeClass() {
+        document.documentElement.className = Telegram.WebApp.colorScheme;
+    }
+    function onScanSuccess(decodedText, decodedResult) {
+        console.log(`Code scanned = ${decodedText}`, decodedResult);
+        Telegram.WebApp.sendData(decodedText.toString());
+    }
+    function startScan(){
+        var html5QrcodeScanner = new Html5QrcodeScanner(
+            "qr-reader", { fps: 10, qrbox: 250 });
+        html5QrcodeScanner.render(onScanSuccess);
+    }
+    Telegram.WebApp.onEvent('themeChanged', setThemeClass);
+    setThemeClass();
+    
     const initData = Telegram.WebApp.initData || '';
     const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
 
