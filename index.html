@@ -18,7 +18,7 @@
         }
         function onScanSuccess(decodedText, decodedResult) {
             console.log(`Code scanned = ${decodedText}`, decodedResult);
-            Telegram.WebApp.sendData(decodedResult);
+            Telegram.WebApp.sendData(decodedText);
         }
         function startScan(){
             var html5QrcodeScanner = new Html5QrcodeScanner(
