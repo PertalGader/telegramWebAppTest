@@ -182,11 +182,12 @@
         <small>(The window goes fullscreen)</small>
         <button onclick="toggleMainButton(this);">Hide Main Button</button>
         <small>(It hides/shows main button)</small>
-        <button onclick="startScan();">Show qr</button>
-        <small>(Show qr code scanner)</small>
         <button id="btnTime" onclick="sendTime(10);">Send time</button>
         <small>(The bot will recieve a message with filled <code>web_app_data</code> field)</small>
+        <button id="btnAnswerWebb" onclick="sendTimeAnswerCallback();">Send answercall</button>
+        <small>(The bot will recieve a on behalf of user field)</small>
     </div>
+
     <div id="qr-reader" style="width: 600px"></div>
 
     <h3>Test links</h3>
@@ -233,17 +234,27 @@
     }
     function startScan(){
         var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 10, qrbox: 250 });
+            "qr-reader", { fps: 60, qrbox: 250 });
         html5QrcodeScanner.render(onScanSuccess);
     }
     Telegram.WebApp.onEvent('themeChanged', setThemeClass);
     setThemeClass();
-    
+
     const initData = Telegram.WebApp.initData || '';
     const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
-
+    const urlParams = new URLSearchParams(initData);
+    const queryId = urlParams.get('query_id')
+    const message2 = {
+        type:'article',
+        id:'6f19e31f-8e51-11de-865c-00215af013a6',
+        title:'test article',
+        query_id: queryId,
+        input_message_content:{
+            message_text:'test from web app'
+        }
+    }
     document.querySelector('#greeting').innerHTML = `Hi, ${initDataUnsafe.user.first_name}!`;
-    document.querySelector('#initData').innerHTML = JSON.stringify(initData, null, 2);
+    document.querySelector('#initData').innerHTML = initData;
     document.querySelector('#initDataUnsafe').innerHTML = JSON.stringify(initDataUnsafe, null, 2);
     document.querySelector('#themeData').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2));
 
@@ -273,6 +284,17 @@
 
     function webviewClose() {
         Telegram.WebApp.close();
+    }
+
+    function sendTimeAnswerCallback(){
+        fetch('http://localhost:8080/web-app',{
+            method: 'POST',
+            headers: {
+                'Content-type':'application/json',
+            },
+            body: JSON.stringify(message2)
+        })
+
     }
 
     function sendTime(spam) {
