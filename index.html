@@ -27,12 +27,6 @@
             color: var(--tg-theme-link-color, #2678b6);
         }
 
-        .centerdiv {
-            clear:both;
-            min-width: 220px;
-            margin: auto;
-        }
-
         button {
             display: block;
             width: 100%;
@@ -175,6 +169,11 @@
         small {
             font-size: 12px;
         }
+
+        .centerdiv {
+            min-width: 220px;
+            margin: auto;
+        }
     </style>
 </head>
 
@@ -202,8 +201,16 @@
         }
     }
     function startScan(){
+        let config = {
+            fps: 10,
+            qrbox: 250,
+            rememberLastUsedCamera: true
+            // Only support camera scan type.
+        }
         var html5QrcodeScanner = new Html5QrcodeScanner(
-            "qr-reader", { fps: 60, qrbox: 250 });
+            "qr-reader",
+            config
+        );
         html5QrcodeScanner.render(onScanSuccess);
     }
     Telegram.WebApp.onEvent('themeChanged', setThemeClass);
