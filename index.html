@@ -27,6 +27,12 @@
             color: var(--tg-theme-link-color, #2678b6);
         }
 
+        .centerdiv {
+            clear:both;
+            min-width: 220px;
+            margin: auto;
+        }
+
         button {
             display: block;
             width: 100%;
@@ -177,7 +183,7 @@
 <section>
     <h1 id="greeting"></h1>
 
-    <div id="qr-reader" style="width: 600px"></div>
+    <div id="qr-reader" class="centerdiv"></div>
 
 </section>
 
@@ -254,7 +260,7 @@
             (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
         );
     }
-    
+
     function sendTimeAnswerCallback(text){
         message2.input_message_content.message_text = text;
         message2.id = uuidv4();
