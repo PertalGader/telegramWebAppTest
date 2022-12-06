@@ -201,6 +201,7 @@
         }
     }
     function startScan(){
+
         let config = {
             fps: 10,
             qrbox: 250,
@@ -212,6 +213,8 @@
             config
         );
         html5QrcodeScanner.render(onScanSuccess);
+        document.getElementById("qr-reader__dashboard_section_fsr").style.visibility="hidden";
+        document.getElementById("qr-reader__dashboard_section_swaplink").style.visibility="hidden";
     }
     Telegram.WebApp.onEvent('themeChanged', setThemeClass);
     setThemeClass();
