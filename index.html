@@ -13,6 +13,10 @@
     <script src="https://telegram.org/js/telegram-web-app.js?1"></script>
     <script src="https://unpkg.com/html5-qrcode@2.0.9/dist/html5-qrcode.min.js"></script>
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             font-family: sans-serif;
             background-color: var(--tg-theme-bg-color, #ffffff);
@@ -174,16 +178,26 @@
             min-width: 220px;
             margin: auto;
         }
+        #qr-reader__dashboard_section_swaplink {
+            visibility: hidden;
+        }
+        #qr-reader > :first-child {
+            position: absolute;
+            z-index: 0;
+        }
+        #qr-reader__scan_region {
+            background-color: #222222;
+            z-index: 1;
+            position: relative;
+        }
+
     </style>
 </head>
 
 <body onload="startScan()">
 
 <section>
-    <h1 id="greeting"></h1>
-
     <div id="qr-reader" class="centerdiv"></div>
-
 </section>
 
 <script type="application/javascript">
@@ -195,9 +209,9 @@
     function onScanSuccess(decodedText, decodedResult) {
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         if(initData){
-            sendTimeAnswerCallback(decodedText);
+            //sendTimeAnswerCallback(decodedText);
         }else{
-            Telegram.WebApp.sendData(decodedText.toString());
+            //Telegram.WebApp.sendData(decodedText.toString());
         }
     }
     function startScan(){
@@ -205,16 +219,14 @@
             fps: 10,
             qrbox: 250,
             rememberLastUsedCamera: true
-            // Only support camera scan type.
         }
         var html5QrcodeScanner = new Html5QrcodeScanner(
             "qr-reader",
             config
         );
         html5QrcodeScanner.render(onScanSuccess);
-        document.getElementById('qr-reader__dashboard_section_swaplink').style.visibility = 'hidden';
-        document.getElementById('qr-reader').children[0].style.visibility = 'hidden';
     }
+
     Telegram.WebApp.onEvent('themeChanged', setThemeClass);
     setThemeClass();
 
@@ -222,6 +234,7 @@
     const initDataUnsafe = Telegram.WebApp.initDataUnsafe || {};
     const urlParams = new URLSearchParams(initData);
     const queryId = urlParams.get('query_id')
+
     const message2 = {
         type:'article',
         id:'6f19e31f-8e51-11de-865c-00215af013a6',
@@ -231,7 +244,7 @@
             message_text:'test from web app'
         }
     }
-    document.querySelector('#greeting').innerHTML = `Hi, ${initDataUnsafe.user.first_name}!`;
+
     document.querySelector('#initData').innerHTML = initData;
     document.querySelector('#initDataUnsafe').innerHTML = JSON.stringify(initDataUnsafe, null, 2);
     document.querySelector('#themeData').html(JSON.stringify(Telegram.WebApp.themeParams, null, 2));
