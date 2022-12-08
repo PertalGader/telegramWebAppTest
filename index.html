@@ -209,9 +209,9 @@
     function onScanSuccess(decodedText, decodedResult) {
         console.log(`Code scanned = ${decodedText}`, decodedResult);
         if(initData){
-            //sendTimeAnswerCallback(decodedText);
+            sendTimeAnswerCallback(decodedText);
         }else{
-            //Telegram.WebApp.sendData(decodedText.toString());
+            Telegram.WebApp.sendData(decodedText.toString());
         }
     }
     function startScan(){
